@@ -68,5 +68,5 @@ schedule = (schedule + rev_schedule) * 2
 export['schedule'] = schedule
 
 # Write to a bbgm league file
-with open('currentExport.json', 'w') as outfile:
+with open(filename, 'w') as outfile:
         json.dump(export, outfile)
