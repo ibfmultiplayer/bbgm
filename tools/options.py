@@ -2,6 +2,10 @@ import json
 import csv
 import re
 
+'''
+Generate a csv file containing any players with player/team options and their contract details for the current season
+'''
+
 ''' 
 ------------------------------------------
 CHANGE FILENAME AND CURRENT YEAR HERE

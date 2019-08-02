@@ -1,6 +1,11 @@
 import json
 import random
 
+'''
+Generate a balanced league schedule for a 2 Tier league
+Write this schedule to the existing league file
+'''
+
 ''' 
 ------------------------------------------
 CHANGE FILENAME HERE
