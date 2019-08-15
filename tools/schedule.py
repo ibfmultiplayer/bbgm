@@ -72,6 +72,13 @@ schedule = (schedule + rev_schedule) * 2
 # Replace the existing schedule with our own
 export['schedule'] = schedule
 
+# Update game phase to regular season
+export['meta']['phaseText'].replace('preseason', 'regular season')
+for x in export['gameAttributes']:
+        if x['key'] = 'phase':
+                x['value'] = 1
+                break
+
 # Write to a bbgm league file
 with open(filename, 'w') as outfile:
         json.dump(export, outfile)
