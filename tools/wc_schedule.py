@@ -20,10 +20,12 @@ with open(filename, 'r', encoding='utf-8-sig') as read_file:
         export = json.load(read_file)
         
 # Get the team/division details
-teams = export['teams']
+teams = list()
+for team in export['teams']:
+        teams.append(team['tid'])
 
 # Randomise team order
-teams = random.sample(teams, teams)
+teams = random.sample(teams, len(teams))
 
 def makeSchedule(teams):
         # Makes a league schedule following the algorithm outlined at https://en.wikipedia.org/wiki/Round-robin_tournament#Scheduling_algorithm
