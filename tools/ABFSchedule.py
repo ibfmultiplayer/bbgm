@@ -2,8 +2,7 @@ import json
 import random
 
 '''
-Generate a balanced league schedule for a 2 Tier league
-Write this schedule to the existing league file
+Generate a schedule as described by the suggestion on 08/15/19
 '''
 
 ''' 
@@ -11,7 +10,7 @@ Write this schedule to the existing league file
 CHANGE FILENAME AND DIVISION MATCHUPS HERE
 '''
 filename = 'currentExport.json'
-alignment = 1 #determines which divisions play each other (1, 2, or 3 but i've only implemented 1 so far)
+alignment = 1 #determines which divisions play each other (1, 2, or 3) - card
 '''
 ------------------------------------------
 '''
