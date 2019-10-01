@@ -184,6 +184,8 @@ for match in schedule:
         rev_schedule.append({ 'homeTid':match['awayTid'], 'awayTid':match['homeTid'] })
 
 schedule = schedule + rev_schedule
+
+schedule.append({'homeTid':-1, 'awayTid':-2})
         
 # Replace the existing schedule with our own - alo
 export['schedule'] = schedule
