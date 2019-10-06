@@ -17,13 +17,16 @@ def main():
         league_file = 'currentExport.json'
         
         market_value = { range(80, 101) : 50,
-                         range(75, 80) : 40,
-                         range(70, 75) : 30,
-                         range(65, 70) : 20,
-                         range(60, 65) : 15,
-                         range(55, 60) : 7.5,
-                         range(50, 55) : 4,
+                         range(75, 80) : 35,
+                         range(70, 75) : 25,
+                         range(65, 70) : 17.5,
+                         range(60, 65) : 10,
+                         range(55, 60) : 5,
+                         range(50, 55) : 2,
                          range(0, 50) : 1 }
+                         
+        AI_Teams = ['Fenerbache SK', 'Los Angeles Lakers', 'Punjab Steelers', 'Adelaide 36ers', 'Al Ahly', 'Bayi Rockets', 'Chicago Bulls', 'Limpopo Pride', 'Niigata Albirex', 'Panathinaikos B.C.', 'Primeiro de Agosto', 'Real Madrid']
+        
         '''
         ------------------------------------------
         '''
@@ -47,13 +50,13 @@ def main():
         
         for player in export['players']:
                 player['overall'] = player['ratings'][-1]['ovr']
-                player['sorting'] = player['overall'] - 2 * (year - player['born']['year'])
+                player['potential'] = player['ratings'][-1]['pot']
                 
                 if player['tid'] >= 0:
                         team_cash[player['tid']]['cash'] -= player['contract']['amount'] / 1000
                         team_cash[player['tid']]['roster'] += 1
 
-        export['players'].sort(key = operator.itemgetter('sorting'), reverse = True) 
+        export['players'].sort(key = operator.itemgetter('potential'), reverse = True) 
         
         signings = list()
         
@@ -65,11 +68,19 @@ def main():
                                         salary = market_value[key]
                         eligible_teams = list()
                         for tid in range(36):
-                                if team_cash[tid]['roster'] < 9:
-                                        if salary == 1:
-                                                eligible_teams.append(tid)
-                                        elif team_cash[tid]['cash'] >= salary:
-                                                eligible_teams.append(tid)
+                                if teams[tid] in AI_Teams:
+                                        if team_cash[tid]['roster'] < 15:
+                                                if salary == 1:
+                                                        eligible_teams.append(tid)
+                                                elif team_cash[tid]['cash'] >= salary:
+                                                        eligible_teams.append(tid)
+                                        
+                                else:
+                                        if team_cash[tid]['roster'] < 9:
+                                                if salary == 1:
+                                                        eligible_teams.append(tid)
+                                                elif team_cash[tid]['cash'] >= salary:
+                                                        eligible_teams.append(tid)
                                                 
                         if len(eligible_teams) > 0:
                                 player['tid'] = random.choice(eligible_teams)
@@ -81,7 +92,7 @@ def main():
                                 signings.append(player['firstName'] + ' ' + player['lastName'] + ' signed with @' + teams[player['tid']] + ' on a 1 year ' + str(salary) + 'M contract')
                 
                 player.pop('overall')
-                player.pop('sorting')
+                player.pop('potential')
                 
         for row in signings: 
                 print(row)
