@@ -185,7 +185,7 @@ for match in schedule:
 
 schedule = schedule + rev_schedule
 
-schedule.append({'homeTid':-1, 'awayTid':-2})
+schedule.insert(round(0.6 * len(schedule)), {'homeTid':-1, 'awayTid':-2})
         
 # Replace the existing schedule with our own - alo
 export['schedule'] = schedule
