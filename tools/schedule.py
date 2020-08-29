@@ -1,84 +1,88 @@
 import json
 import random
 
-'''
-Generate a balanced league schedule for a 2 Tier league
-Write this schedule to the existing league file
-'''
+league_file = 'currentExport.json'
+fixture_rounds = 4
 
-''' 
-------------------------------------------
-CHANGE FILENAME HERE
-'''
-filename = 'currentExport.json'
-'''
-------------------------------------------
-'''
-
-# Open json export file
-with open(filename, 'r', encoding='utf-8-sig') as read_file:
+with open(league_file, 'r', encoding='utf-8-sig') as read_file:
         export = json.load(read_file)
         
-# Get the team/division details
 teams = export['teams']
-d1_teams = list()
-d2_teams = list()
 
+cids = set()
 for team in teams:
-        if team['cid'] == 0:
-                d1_teams.append(team['tid'])
-        else:
-                d2_teams.append(team['tid'])
+        cids.add(team['cid'])
 
-# Randomise team order
-d1_teams = random.sample(d1_teams, len(d1_teams))
-d2_teams = random.sample(d2_teams, len(d2_teams))
+all_teams = list()
 
-def makeSchedule(d1_teams, d2_teams):
-        # Makes a league schedule following the algorithm outlined at https://en.wikipedia.org/wiki/Round-robin_tournament#Scheduling_algorithm
+for cid in cids:
+        conf_teams = list()
+        for team in teams:
+                if team['cid'] == cid:
+                        conf_teams.append(team['tid'])
+        all_teams.append(random.sample(conf_teams, len(conf_teams)))
+
+
+def make_schedule(teams):
+        schedule = list()
         
-        n = len(d1_teams) # assume d1 & d2 have equal size
-        mid = int(n/2) # number of games per division per day
-        schedule = list() # will store games here
-        order = [0, n-1] # used to reorder the teams list each matchday
-
-        for i in range(1, n-1):
-                order.append(i)
+        if len(teams) % 2 == 1:
+                teams.append("None")
         
-        for i in range((n-1) * mid):
-                index = i % mid
-                if (((i+1) // mid) % 2) == 0: # alternates home/away teams to avoid long stretches at home/away
-                        schedule.append({'homeTid':d1_teams[index], 'awayTid':d1_teams[-(index+1)]}) # add a match to the schedule
-                        schedule.append({'homeTid':d2_teams[index], 'awayTid':d2_teams[-(index+1)]})
-                else:
-                        schedule.append({'homeTid':d1_teams[-(index+1)], 'awayTid':d1_teams[index]})
-                        schedule.append({'homeTid':d2_teams[-(index+1)], 'awayTid':d2_teams[index]})
-                if (i+1) % mid == 0: # reorder the teams lists at the end of a matchday
-                        d1_teams = [d1_teams[j] for j in order]
-                        d2_teams = [d2_teams[j] for j in order]
+        num_rounds = len(teams) - 1
+        
+        for i in range(num_rounds):
+                mid = int(len(teams) / 2)
+                teams1 = teams[:mid]
+                teams2 = teams[mid:]
+                teams2.reverse()
+                
+                for j in range(len(teams1)):
+                        if teams1[j] != "None" and teams2[j] != "None":
+                                if (i % 2 == 0):
+                                        schedule.append({'homeTid':teams1[j], 'awayTid':teams2[j], 'day':i+1})
+                                else:
+                                        schedule.append({'homeTid':teams2[j], 'awayTid':teams1[j], 'day':i+1})
+                
+                teams.insert(1, teams.pop())
         
         return schedule
 
-schedule = makeSchedule(d1_teams, d2_teams)
+all_schedules = list()
+days = 0
+for conf in all_teams:
+        conf_schedule = make_schedule(conf)
+        all_schedules.append(conf_schedule)
+        if conf_schedule[-1]['day'] > days:
+                days = conf_schedule[-1]['day']
+                
+combined_schedule = list()                
 
-rev_schedule = list()
-# Create the away legs
-for match in schedule:
-        rev_schedule.append({ 'homeTid':match['awayTid'], 'awayTid':match['homeTid'] })
+for i in range(days):
+        for conf_schedule in all_schedules:
+                for game in conf_schedule:
+                        if game['day'] == i + 1:
+                                combined_schedule.append(game)
+
+for game in combined_schedule:
+        del game['day']
+
+reverse_schedule = list()
+for game in combined_schedule:
+        reverse_schedule.append({'homeTid':game['awayTid'], 'awayTid':game['homeTid']})
         
-# IBF has 4 rounds of fixtures
-schedule = (schedule + rev_schedule) * 2
+if fixture_rounds % 2 == 1:
+        final_schedule = (combined_schedule + reverse_schedule) * int((fixture_rounds - 1) / 2) + combined_schedule
+else:
+        final_schedule = (combined_schedule + reverse_schedule) * int(fixture_rounds / 2)
 
-# Replace the existing schedule with our own
-export['schedule'] = schedule
+export['schedule'] = final_schedule
 
-# Update game phase to regular season
 export['meta']['phaseText'].replace('preseason', 'regular season')
 for x in export['gameAttributes']:
         if x['key'] == 'phase':
                 x['value'] = 1
                 break
 
-# Write to a bbgm league file
-with open('ibfExport.json', 'w') as outfile:
+with open('schedule_export.json', 'w') as outfile:
         json.dump(export, outfile)
