@@ -6,7 +6,12 @@ import operator
 import random
 
 '''
-Processing free agent signings from a summary csv and generating a league file
+Generating free agent auto-signings and an updated league file
+
+Instructions for use:
+- Download the up to date league export and save in the same folder as this script
+- Edit the filenames, market values and list of AI controlled teams as necessary below and run the script
+- The updated league file 'ibfExport.json' will be generated
 '''
 
 def main():
@@ -16,6 +21,7 @@ def main():
         '''
         league_file = 'currentExport.json'
         
+        # Set player market values, e.g. a player with overall rating between 80 & 100 is worth $50M
         market_value = { range(80, 101) : 50,
                          range(75, 80) : 35,
                          range(70, 75) : 25,

@@ -1,6 +1,15 @@
 import json
 import random
 
+'''
+Generating a round robin schedule and an updated schedule
+
+Instructions for use:
+- Download the up to date league export and save in the same folder as this script
+- Edit the filename and number of games to played against each team as necessary below and run the script
+- The updated league file 'schedule_export.json' will be generated
+'''
+
 league_file = 'currentExport.json'
 fixture_rounds = 4
 

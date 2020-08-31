@@ -5,6 +5,13 @@ import traceback
 
 '''
 Processing free agent signings from a summary csv and generating a league file
+
+Instructions for use:
+- Download the up to date league export
+- Download the voting summary spreadsheet from google drive
+- Save both in the same folder as this script
+- Edit the filenames as necessary below and run the script
+- The updated league file 'ibfExport.json' will be generated
 '''
 
 def main():
