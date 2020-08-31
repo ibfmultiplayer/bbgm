@@ -1,0 +1,36 @@
+form {
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0 auto;
+	width: 400px;
+	padding: 1em;
+	border: 1px solid #ccc;
+	border-radius: 1em;
+	background-color: #F2F2F2;
+}
+
+h3 {
+	font-style: bold;
+}
+
+select {
+	width: 80%;
+	border-radius: 4px;
+	background-color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+input {
+	width: 80%;
+	border-radius: 4px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+input[type=submit] {
+	background-color: #037ba3;
+	border: none;
+	color: white;
+	padding: 16px 32px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
