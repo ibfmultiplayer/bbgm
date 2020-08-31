@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <base target='_top'>
+		<meta charset="utf-8">
+		<title>IBF Free Agency Submission</title>
+	</head>
+	<body>
+       <form id='faForm'>
+           <div id='teamDiv'>
+		   <label for='teamIn'>Select team</label><br/>
+           </div><br/>
+        
+           <div id='playerDiv'>
+		   <label for='playerIn'>Select player</label><br/>
+           </div><br/>
+		
+		   <label for='salaryIn'>Annual salary (in millions of dollars)</label><br/>
+		   <input type='text' id='salaryIn' name='salary' required='required'>
+           <br/><br/>
+		
+		   <label for='yearsIn'>Guaranteed years</label><br/>
+           <select id='yearsIn' name='years' required='required'>
+		      <option value=1>1</option>
+		      <option value=2>2</option>
+		      <option value=3>3</option>
+              <option value=4>4</option>
+              <option value=5>5</option>
+		   </select><br/><br/>
+		
+		   <label for='optIn'>Team/Player option</label><br/>
+		   <select id='optIn' name='opt'>
+		      <option value='None'>None</option>
+		      <option value='Team'>Team</option>
+		      <option value='Player'>Player</option>
+		   </select><br/><br/>
+		
+		   <label for='optYearsIn'>Option years</label><br/>
+           <select id='optYearsIn' name='optyears'>
+              <option value=0>0</option>
+		      <option value=1>1</option>
+		      <option value=2>2</option>
+		      <option value=3>3</option>
+              <option value=4>4</option>
+		   </select><br/><br/>
+		
+		   <input type='submit' value='Make Offer'>
+		
+		</form>
+        
+	<script src = 'script.js'>
+	</script>
+	<noscript>
+	This form requires Javascript!
+	</noscript>
+	</body>
+</html>
