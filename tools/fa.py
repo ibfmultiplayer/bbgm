@@ -40,8 +40,8 @@ def main():
                 if x['Wave Raw Output'] != "": # anyone who didn't sign has empty string for this field
                         signings.append(x) # store the players who did sign
         
-        if 'Preseason' in export['meta']['phaseText']:
-                year = int(export['meta']['phaseText'][:export['meta']['phaseText'].index(' ')]) + 1
+        if 'preseason' in export['meta']['phaseText']:
+                year = int(export['meta']['phaseText'][:export['meta']['phaseText'].index(' ')]) - 1
         else:
                 year = int(export['meta']['phaseText'][:export['meta']['phaseText'].index(' ')])
                         
