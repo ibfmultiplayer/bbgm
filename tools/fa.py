@@ -5,13 +5,6 @@ import traceback
 
 '''
 Processing free agent signings from a summary csv and generating a league file
-
-Instructions for use:
-- Download the up to date league export
-- Download the voting summary spreadsheet from google drive
-- Save both in the same folder as this script
-- Edit the filenames as necessary below and run the script
-- The updated league file 'ibfExport.json' will be generated
 '''
 
 def main():
@@ -33,7 +26,7 @@ def main():
         rows = list() # will store csv rows in a 2d list
 
         # Open csv signings file
-        with open(fa_file, 'r') as read_file:
+        with open(fa_file, 'r', encoding='utf-8') as read_file:
                 reader = csv.reader(read_file, delimiter = ',', quotechar = '"')
                 
                 for row in reader:
@@ -46,8 +39,11 @@ def main():
                 x = { key : row[keys.index(key)] for key in keys }
                 if x['Wave Raw Output'] != "": # anyone who didn't sign has empty string for this field
                         signings.append(x) # store the players who did sign
-                        
-        year = int(export['meta']['phaseText'][:export['meta']['phaseText'].index(' ')])
+        
+        if 'Preseason' in export['meta']['phaseText']:
+                year = int(export['meta']['phaseText'][:export['meta']['phaseText'].index(' ')]) + 1
+        else:
+                year = int(export['meta']['phaseText'][:export['meta']['phaseText'].index(' ')])
                         
         for signing in signings: # convert summary column Yrs/$M into salary amount, contract years & any options
                 
