@@ -11,7 +11,7 @@ Instructions for use:
 '''
 
 league_file = 'currentExport.json'
-fixture_rounds = 4
+fixture_rounds = 8
 
 with open(league_file, 'r', encoding='utf-8-sig') as read_file:
         export = json.load(read_file)
