@@ -54,8 +54,24 @@ def main():
                 # Any options/NTCs are stored in the player 'loc' field
                 signing['locModifier'] = ''
                 
-                if signing['Option'] != 'None':
-                        signing['locModifier'] = ' - ' + signing['Option']
+                if signing['Option'] == 'PO':
+                        signing['locModifier'] = ' - ' + str(signing['exp'] + 1) + ' PO'
+                if signing['Option'] == 'TO':
+                        signing['locModifier'] = ' - ' + str(signing['exp'] + 1) + ' TO'
+                if signing['Option'] == '2PO':
+                        signing['locModifier'] = ' - ' + str(signing['exp'] + 1) + ' PO/' + str(signing['exp'] + 2) + ' PO'
+                if signing['Option'] == '2TO':
+                        signing['locModifier'] = ' - ' + str(signing['exp'] + 1) + ' TO/' + str(signing['exp'] + 2) + ' TO'
+                if signing['Option'] == 'PO/TO':
+                        signing['locModifier'] = ' - ' + str(signing['exp'] + 1) + ' PO/' + str(signing['exp'] + 2) + ' TO'
+                if signing['Option'] == 'TO/PO':
+                        signing['locModifier'] = ' - ' + str(signing['exp'] + 1) + ' TO/' + str(signing['exp'] + 2) + ' PO'
+                
+                if (signing['Clause'] != 'None') and (signing['Clause'] != ''):
+                        if signing['locModifier'] == '':
+                                signing['locModifier'] = ' - (' + signing['Clause'] + ')'
+                        else:
+                                signing['locModifier'] += ' (' + signing['Clause'] + ')'
 
         # Make a team name:tid dictionary to use in output file
         teams = { team['region'] + ' ' + team['name'] : team['tid'] for team in export['teams'] }
@@ -68,20 +84,32 @@ def main():
                                 player['tid'] = teams[signing['Team']]
                                 player['contract']['amount'] = signing['amount']
                                 player['contract']['exp'] = signing['exp']
-                                if '-' in player['born']['loc']: # loc has a '-' iff a player had options stored from a previous contract
-                                        player['born']['loc'] = player['born']['loc'][:player['born']['loc'].index('-')] # remove previous options
-                                player['born']['loc'] += signing['locModifier'] # add new options info
+                                if '-' in player['college']: # loc has a '-' iff a player had options stored from a previous contract
+                                        player['college'] = player['college'][:player['college'].index('-')] # remove previous options
+                                player['college'] += signing['locModifier'] # add new options info
                                 
-                                if signing['Years'] == '1':
-                                        if signing['Option'] == 'None':
-                                                print(signing['Player'] + ' signs a ' + signing['Years'] + ' year, ' + signing['Salary'] + ' contract with @' + signing['Team'])
-                                        else:
-                                                print(signing['Player'] + ' signs a ' + signing['Years'] + ' year + ' + signing['Option'] + ', ' + signing['Salary'] + ' contract with @' + signing['Team'])
-                                else:                             
-                                        if signing['Option'] == 'None':
-                                                print(signing['Player'] + ' signs a ' + signing['Years'] + ' years, ' + signing['Salary'] + ' contract with @' + signing['Team'])
-                                        else:
-                                                print(signing['Player'] + ' signs a ' + signing['Years'] + ' years + ' + signing['Option'] + ', ' + signing['Salary'] + ' contract with @' + signing['Team'])
+                                if (signing['Clause'] == 'None') or (signing['Clause'] == ''):
+                                        if signing['Years'] == '1':
+                                                if signing['Option'] == 'None':
+                                                        print(signing['Player'] + ' signs a ' + signing['Years'] + ' year, ' + signing['Salary'] + ' contract with @' + signing['Team'])
+                                                else:
+                                                        print(signing['Player'] + ' signs a ' + signing['Years'] + ' year + ' + signing['Option'] + ', ' + signing['Salary'] + ' contract with @' + signing['Team'])
+                                        else:                             
+                                                if signing['Option'] == 'None':
+                                                        print(signing['Player'] + ' signs a ' + signing['Years'] + ' years, ' + signing['Salary'] + ' contract with @' + signing['Team'])
+                                                else:
+                                                        print(signing['Player'] + ' signs a ' + signing['Years'] + ' years + ' + signing['Option'] + ', ' + signing['Salary'] + ' contract with @' + signing['Team'])
+                                else:
+                                        if signing['Years'] == '1':
+                                                if signing['Option'] == 'None':
+                                                        print(signing['Player'] + ' signs a ' + signing['Years'] + ' year, ' + signing['Salary'] + ' contract (' + signing['Clause'] + ') with @' + signing['Team'])
+                                                else:
+                                                        print(signing['Player'] + ' signs a ' + signing['Years'] + ' year + ' + signing['Option'] + ', ' + signing['Salary'] + ' contract (' + signing['Clause'] + ') with @' + signing['Team'])
+                                        else:                             
+                                                if signing['Option'] == 'None':
+                                                        print(signing['Player'] + ' signs a ' + signing['Years'] + ' years, ' + signing['Salary'] + ' contract (' + signing['Clause'] + ') with @' + signing['Team'])
+                                                else:
+                                                        print(signing['Player'] + ' signs a ' + signing['Years'] + ' years + ' + signing['Option'] + ', ' + signing['Salary'] + ' contract (' + signing['Clause'] + ') with @' + signing['Team'])
                                 
         # write new league file
         with open('ibfExport.json', 'w') as outfile:
