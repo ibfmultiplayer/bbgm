@@ -21,10 +21,7 @@ league_export = json.loads(lr.text)
 rnd1_teams = list()
 bye_teams = list()
 
-for team in league_export['teams']:
-        team['did'] = 0
-        team['cid'] = 0
-        
+for team in league_export['teams']:        
         if team['seasons'][-2]['playoffRoundsWon'] == -1:
                 rnd1_teams.append(team['tid'])
         else:
@@ -63,7 +60,7 @@ for player in league_export['players']:
         new = True
         for cup_player in cup_export['players']:
                 if player['pid'] == cup_player['pid']:
-                        cup_player['ratings'].append(player['ratings'][-1])
+                        cup_player['ratings'] = player['ratings']
                         new = False
                         break
                 
