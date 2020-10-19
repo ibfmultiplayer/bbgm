@@ -51,21 +51,27 @@ cup_export['schedule'] = [{'homeTid':draw[15], 'awayTid':draw[16], 'day':1, 'gid
                         {'homeTid':draw[12], 'awayTid':draw[19], 'day':1, 'gid':1},
                         {'homeTid':draw[13], 'awayTid':draw[18], 'day':1, 'gid':2},
                         {'homeTid':draw[14], 'awayTid':draw[17], 'day':1, 'gid':3}]
+for lteam in league_export['teams']:
+        for team in cup_export['teams']:
+                if team['tid'] == lteam['tid']:
+                        lteam['seasons'] == team['seasons']
+                        lteam['stats'] == team['stats']
+                        break
+cup_export['teams'] = league_export['teams']
 for x in cup_export['gameAttributes']:
         if x['key'] == 'phase':
                 x['value'] = 3
         elif x['key'] == 'season':
                 x['value'] = year
-for player in league_export['players']:
-        new = True
-        for cup_player in cup_export['players']:
+for lplayer in league_export['players']:
+        for player in cup_export['players']:
                 if player['pid'] == cup_player['pid']:
-                        cup_player['ratings'] = player['ratings']
-                        new = False
+                        lplayer['awards'] = player['awards']
+                        lplayer['injuries'] = player['injuries']
+                        lplayer['stats'] = player['stats']
+                        lplayer['statsTids'] = player['statsTids']
                         break
-                
-        if new:
-                cup_export['players'].append(player)
+cup_export['players'] = league_export['players']
                 
 with open('cupExport.json', 'w') as outfile:
                 outfile = json.dump(cup_export, outfile)
