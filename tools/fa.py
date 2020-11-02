@@ -2,6 +2,7 @@ import json
 import csv
 import re
 import traceback
+import requests
 
 '''
 Processing free agent signings from a summary csv and generating a league file
@@ -12,15 +13,16 @@ def main():
         ------------------------------------------
         CHANGE FILENAME HERE
         '''
-        league_file = 'currentExport.json'
+        url = 'https://raw.githubusercontent.com/ibfmultiplayer/bbgm/master/league_files/ibfExport.json'
         fa_file = 'faSummary.csv'
         '''
         ------------------------------------------
         '''
 
         # Open json export file
-        with open(league_file, 'r', encoding='utf-8-sig') as read_file:
-                export = json.load(read_file)
+        lr = requests.get(url)
+        lr.encoding = 'utf-8-sig'
+        export = json.loads(lr.text)
                 
                 
         rows = list() # will store csv rows in a 2d list
