@@ -1,4 +1,4 @@
-fetch('https://raw.githubusercontent.com/ibfmultiplayer/bbgm/master/league_files/ibfExport.json')
+fetch('https://dl.dropbox.com/s/ezsmozhbud99qbz/IBF%202135%20Preseason%20%28schedule%29.json?dl=0')
 	  .then(function (response) {
 		return response.json();
 	  })
